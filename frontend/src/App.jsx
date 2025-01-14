@@ -1,16 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import styled from 'styled-components';
+import bg from './img/img/bg.png';
+import { MainLayout } from './styles/Layouts';
+import Orb from './components/Orb/Orb';
+import Navigation from './components/Navigation/Navigation';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      
-    </>
-  )
+    <AppStyled $bg={bg} className="App">
+      <Orb />
+      <MainLayout>
+        <Navigation />
+      </MainLayout>
+    </AppStyled>
+  );
 }
 
-export default App
+const AppStyled = styled.div`
+  height: 100vh;
+  background-image: url(${(props) => props.$bg});
+  position: relative;
+`;
+
+export default App;
