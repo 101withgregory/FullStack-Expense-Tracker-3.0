@@ -12,7 +12,7 @@ const ExpenseSchema = new Schema({
     },
     type:{
         type:String,
-        default:'income'
+        default:'expense'
     },
     date:{
         type:Date,
