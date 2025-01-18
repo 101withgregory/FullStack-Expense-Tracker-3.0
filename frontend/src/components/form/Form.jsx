@@ -6,10 +6,25 @@ import "react-datepicker/dist/react-datepicker.css";
 import Button from '../Button/Button';
 import { plus } from '../../utils/icons';
 import { useGlobalContext } from '../../context/shareGlobalContext';
+import Modal from '../Modal/Modal';
 
+import Swal from 'sweetalert2';
 
-function Form() {
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  }
+});
+
+function Form({closeModal}) {
     const {addIncome, getIncomes, error, setError} = useGlobalContext()
+    const [isOpen, isModalOpen] = useState(false);
     const [inputState, setInputState] = useState({
         title: '',
         amount: '',
@@ -17,7 +32,6 @@ function Form() {
         category: '',
         description: '',
     })
-
     const { title, amount, date, category,description } = inputState;
 
     const handleInput = name => e => {
@@ -27,7 +41,18 @@ function Form() {
 
     const handleSubmit = e => {
         e.preventDefault()
+        if (!title || !amount || !date || !category) {
+            Toast.fire({
+                icon: "error",
+                title: "All fields are required!",
+            });
+            return;
+        }
         addIncome(inputState)
+        Toast.fire({
+            icon: "success",
+            title: "Income added successfully!"
+        });
         getIncomes();
         setInputState({
             title: '',
@@ -36,11 +61,12 @@ function Form() {
             category: '',
             description: '',
         })
+        closeModal();
     }
 
     return (
-        <FormStyled onSubmit={handleSubmit}>
-            {error && <p className='error'>{error}</p>}
+            <FormStyled onSubmit={handleSubmit}>
+            
             <div className="input-control">
                 <input 
                     type="text" 
@@ -93,6 +119,7 @@ function Form() {
                     bRad={'30px'}
                     bg={'var(--color-accent'}
                     color={'#fff'}
+                    onClick={handleSubmit}
                 />
             </div>
         </FormStyled>

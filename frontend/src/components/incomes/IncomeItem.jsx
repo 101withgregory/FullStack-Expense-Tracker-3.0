@@ -1,7 +1,8 @@
 import React from 'react'
 import Button from '../Button/Button'
-import { bitcoin, book, calender, card, circle, clothing, comment, dollar, food, freelance, medical, money, stocks, takeaway, trash, tv, users, yt } from '../../utils/icons'
+import { bitcoin, book, calender, card, circle, clothing, comment, dollar, food, freelance, medical, money, piggy, stocks, takeaway, trash, tv, users, yt } from '../../utils/icons'
 import styled from 'styled-components'
+import { dateFormat } from '../../utils/dateFormat'
 
 function IncomeItem({
     id,
@@ -32,7 +33,7 @@ function IncomeItem({
             case 'youtube':
                 return yt;
             case 'other':
-                return 'piggy';
+                return piggy;
         
             default:
                 return ''
@@ -71,7 +72,7 @@ function IncomeItem({
             <div className="inner-content">
                 <div className="text">
                     <p className='text-amount'>{dollar}{amount}</p>
-                    <p>{calender} {date}</p>
+                    <p>{calender} {dateFormat(date )}</p>
                     <p className='description'>
                         {comment}
                         {description}

@@ -5,10 +5,20 @@ import "react-datepicker/dist/react-datepicker.css";
 import Button from '../Button/Button';
 import { plus } from '../../utils/icons';
 import { useGlobalContext } from '../../context/shareGlobalContext';
-
-
+import Swal from 'sweetalert2';
+const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
 function ExpenseForm() {
-    const {addExpense, error, setError} = useGlobalContext()
+    const {addExpense, error, setError, getExpenses} = useGlobalContext()
     const [inputState, setInputState] = useState({
         title: '',
         amount: '',
@@ -26,7 +36,19 @@ function ExpenseForm() {
 
     const handleSubmit = e => {
         e.preventDefault()
+        if (!title || !amount || !date || !category) {
+            Toast.fire({
+                icon: "error",
+                title: "All fields are required!",
+            });
+            return;
+        }
         addExpense(inputState)
+        Toast.fire({
+            icon: "success",
+            title: "Expense recorded successfully!"
+        });
+        getExpenses();
         setInputState({
             title: '',
             amount: '',
